@@ -135,4 +135,25 @@ public class CandidateDaoImpl implements CandidateDao{
 			return list;
 		}
 
+	    @Override
+		@Transactional
+		public Candidate getCandidate(String email) {
+			try {
+	   		 Session session=factory.getCurrentSession();
+	       	 String hql="from Candidate c where c.email=: email";
+	       	 
+	       	 Query<Candidate> query=session.createQuery(hql, Candidate.class);
+	       	 query.setParameter("email", email);
+	       	 Candidate candidate=query.list().get(0);
+	       	 if(candidate != null)
+	       	 return candidate;
+	       	 else
+	       		 return null;
+	       				
+
+			} catch (Exception e) {
+				e.printStackTrace();
+				return null;
+			}
+		}
 }

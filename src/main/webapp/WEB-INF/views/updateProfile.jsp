@@ -298,9 +298,22 @@
                 </div>
             </div>
              <div class="form-group">
-                    <label>Resume</label>
-                    <input type="file"  name="resume" value="<%=candidate.getFileData()%>"required>
-                </div>
+    <label>Resume</label>
+    
+    <% if(candidate.getFileName() != null && !candidate.getFileName().isEmpty()) { %>
+        <div style="margin-bottom: 10px; padding: 8px; background: #f0fdfa; border: 1px dashed var(--primary-light); border-radius: 6px; display: flex; align-items: center; gap: 10px;">
+            <i class="fa-solid fa-file-pdf" style="color: var(--primary-color);"></i>
+            <span style="font-size: 13px; color: var(--text-dark);">
+                Current: <strong><%= candidate.getFileName() %></strong>
+            </span>
+        </div>
+    <% } %>
+
+    <input type="file" name="resume" accept=".pdf,.doc,.docx">
+    <small style="color: var(--secondary-color); font-size: 11px;">
+        Leave empty to keep the current file, or upload a new one to replace it.
+    </small>
+</div>
             
             <div style="display: flex; justify-content: flex-end; margin-top: 20px;">
                 <button type="submit" class="btn-update">

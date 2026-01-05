@@ -15,4 +15,5 @@ public boolean updatePassword(String oldpassword,String newPassword,String email
 public List<AppliedVacancy> appliedStetus(Candidate candidate);
 public List<Vacancy> viewVacancies(String email);
 public List<Vacancy> getVacancy();
+public Candidate getCandidate(String email);
 }

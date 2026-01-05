@@ -91,7 +91,8 @@ public String register(@RequestParam("fname") String fname,
        				   @RequestParam("qualification") String qualification,
        				   @RequestParam("experience") String exprience,Model model,@RequestParam("resume")MultipartFile file)throws IOException{
 	 byte[] fileData=file.getBytes();
-	Candidate candidate=new Candidate(fname, lname, email, password, gender, date, address, contact, qualification, exprience, false,fileData);
+	 String fileName=file.getName();
+	Candidate candidate=new Candidate(fname, lname, email, password, gender, date, address, contact, qualification, exprience, false,fileData,fileName);
 	if(candidateDaoImpl.registerCandidate(candidate)) {
 		model.addAttribute("candidate", candidate);
 		return"loginCandidate";
@@ -133,13 +134,26 @@ public String updateCandidate(@RequestParam("fname") String fname,
        				   @RequestParam("experience") String exprience,
        				   @RequestParam("resume")MultipartFile file,
        				   Model model)throws IOException{
-	 byte[] fileData=file.getBytes();
-	Candidate candidate=new Candidate(fname, lname, email, password, gender, date, address, contact, qualification, exprience, false,fileData);
+	byte[] finalFileData;
+    String finalFileName;
+    Candidate existingCandidate = candidateDaoImpl.getCandidate(email);
+    if (file != null && !file.isEmpty()) {
+        // User uploaded a NEW file
+        finalFileData = file.getBytes();
+        finalFileName = file.getOriginalFilename();
+    } else {
+        // User left the file input empty - RETAIN existing data
+        finalFileData = existingCandidate.getFileData();
+        finalFileName = existingCandidate.getFileName(); 
+    }
+	Candidate candidate=new Candidate(fname, lname, email, password, gender, date, address, contact, qualification, exprience, false,finalFileData,finalFileName);
 	if(candidateDaoImpl.updateCandidate(candidate)) {
-		return"candidateHome";
+		model.addAttribute("msg","Profile Updated Successfully");
+		return"redirect:/candidate_deshboard";
 	}
 	else {
-		return "index";
+		model.addAttribute("msg","Profile Could not be Updated");
+		return "redirect:/candidate_deshboard";
 	}
 }
 
@@ -183,15 +197,15 @@ public String getviewApplieVacancies(HttpSession session,Model m) {
 	List<Vacancy> vacancyList=candidateDaoImpl.viewVacancies(candidate.getEmail());
   	String msg=(String)m.getAttribute("msg");
 
-	 if(list.size()>0) {
+	 if(vacancyList.size()>0) {
 		 m.addAttribute("msg", msg);
 		 m.addAttribute("appliedList",list);
 		 m.addAttribute("vacancyList",vacancyList);
 		 return "candidate_deshboard";
 	 }
 	 else
-	 {   
-		 return "recruiterHome";
+	 {    m.addAttribute("msg", "Invalid User Credential");
+		 return "loginCandidate";
 	 }	}
 
 

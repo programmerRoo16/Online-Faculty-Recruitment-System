@@ -20,12 +20,13 @@ public class Candidate {
 	private boolean verified;
 	@Lob
 	private byte[] fileData;
+	private String fileName;
 	public Candidate() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
 	public Candidate(String fname, String lname, String email, String password, String gender, String date,
-			String address, String contact, String qualification, String experience, boolean verified,byte[] fileData) {
+			String address, String contact, String qualification, String experience, boolean verified,byte[] fileData, String fileName) {
 		super();
 		this.fname = fname;
 		this.lname = lname;
@@ -111,6 +112,12 @@ public class Candidate {
 	}
 	public void setFileData(byte[] fileData) {
 		this.fileData = fileData;
+	}
+	public String getFileName() {
+		return fileName;
+	}
+	public void setFileName(String fileName) {
+		this.fileName = fileName;
 	}
 	
 }

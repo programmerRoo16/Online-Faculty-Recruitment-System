@@ -127,10 +127,10 @@ public class RecruiterDaoImpl implements RecruiterDao{
 	public List<Vacancy> viewVacancies(String email) {
         Session session=fectory.getCurrentSession();
 		
-		Query<Vacancy> query=session.createQuery("from Vacancy v where v.email!=:email",Vacancy.class).setParameter("email", email);
+		Query<Vacancy> query=session.createQuery("from Vacancy v where v.email=:email",Vacancy.class).setParameter("email", email);
 		
 		List<Vacancy> list=query.list();
-		
+			
 		return list;
 	}
 
